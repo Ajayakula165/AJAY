@@ -1,0 +1,402 @@
+/* --- 1. CORE VARIABLES & RESET --- */
+:root {
+    --midnight: #0A0A1A; 
+    --pink-neon: #FF4081; /* Electric Pink */
+    --cyan-neon: #40C4FF; /* Vibrant Cyan */
+    --soft-white: #E0E0E0;
+    --header-font: 'Montserrat', sans-serif;
+    --body-font: 'Roboto', sans-serif;
+    --transition-speed: 0.8s;
+    /* NEW LETTER COLORS */
+    --letter-bg: #FFFDF8; /* Creamy White */
+    --letter-text: #333333; /* Dark Grey */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--body-font);
+    color: var(--soft-white);
+    background: var(--midnight);
+    /* Enable Scroll Snapping for full-section transitions */
+    scroll-snap-type: y mandatory;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* --- 2. GLOBAL STYLING & ANIMATIONS --- */
+.section-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 5%;
+    position: relative;
+    z-index: 5;
+}
+
+.scroll-snap {
+    scroll-snap-align: start;
+}
+
+h2 {
+    font-size: 2.5em;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    font-family: var(--header-font);
+}
+
+.title-text {
+    font-family: var(--header-font);
+    font-weight: 900;
+}
+
+/* Neon Text Effects */
+.neon-text-pink {
+    color: var(--soft-white);
+    text-shadow: 0 0 7px var(--pink-neon), 0 0 10px var(--pink-neon);
+}
+
+.neon-text-cyan {
+    color: var(--soft-white);
+    text-shadow: 0 0 7px var(--cyan-neon), 0 0 10px var(--cyan-neon);
+}
+
+/* --- 3. FLOATING STAR FIELD (Unchanged) --- */
+#star-field {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #150030 0%, #0A0A1A 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* --- 4. HERO SECTION (Unchanged) --- */
+#hero {
+    text-align: center;
+    background-color: var(--midnight);
+    z-index: 10;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+#hero h1 {
+    font-size: 4.5em;
+    opacity: 0;
+    transition: opacity var(--transition-speed) ease-out, transform var(--transition-speed) ease-out;
+}
+#hero h1[data-reveal="1"].revealed { transform: translateY(0); opacity: 1; }
+#hero h1 { transform: translateY(20px); }
+
+
+.auto-typing-text {
+    display: block;
+    min-height: 50px; 
+    font-size: 1.8em;
+    font-weight: 300;
+    margin-top: 20px;
+    color: var(--cyan-neon);
+}
+
+.scroll-down-indicator {
+    display: inline-block;
+    color: var(--soft-white);
+    text-decoration: none;
+    font-size: 1em;
+    margin-top: 50px;
+    padding: 10px 20px;
+    border: 1px solid var(--cyan-neon);
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    opacity: 0;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* --- 5. TIMELINE APERTURES (Horizontal Scroll - UPDATED DIMENSIONS) --- */
+#our-journey {
+    background-color: #12122B;
+}
+
+/* Re-enable horizontal flex and scroll */
+.horizontal-scroll-wrapper {
+    display: flex; 
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    width: 100%;
+    height: 80vh; /* Set a very tall height for the container */
+    padding: 20px 0;
+    scroll-snap-type: x mandatory; /* Keep scroll snap for clean transitions */
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+    align-items: center; /* Vertically center the frames */
+}
+
+.aperture-frame {
+    flex-shrink: 0; 
+    width: 45vw; /* DECREASE WIDTH for a narrower frame */
+    height: 90%; /* INCREASE HEIGHT to take up most of the container */
+    margin-right: 50px;
+    background-size: cover;
+    background-position: center;
+    border: 3px solid var(--cyan-neon);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Hexagonal shape */
+    transition: transform 0.5s ease-in-out;
+    scroll-snap-align: center;
+    position: relative;
+    box-shadow: 0 0 20px rgba(64, 196, 255, 0.4);
+    /* Remove vertical reveal styles from previous step */
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Remove the old .aperture-frame.visible class */
+
+.aperture-caption {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--soft-white);
+    padding: 5px 15px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    font-size: 0.9em;
+    border: 1px solid var(--cyan-neon);
+}
+
+.scroll-hint {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #888;
+}
+
+/* --- 6. THE LETTER SECTION STYLING (Unchanged) --- */
+#letter-section {
+    /* Dramatic shift to light background */
+    background: linear-gradient(180deg, #F0F0F0, #FFFFFF); 
+}
+
+#letter-section h2 {
+    /* Adjusting neon text color for light background */
+    color: var(--midnight); 
+    text-shadow: none;
+    margin-bottom: 20px;
+}
+
+.letter-container {
+    max-width: 800px;
+    width: 90%;
+    /* Light, elegant paper template */
+    background-color: var(--letter-bg); 
+    color: var(--letter-text);
+    padding: 50px 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Soft shadow for depth */
+    font-family: var(--body-font);
+    line-height: 1.8;
+    text-align: left;
+    margin-top: 30px;
+    /* Optional: Subtle texture using a gradient */
+    background-image: radial-gradient(#F5F5F5 1px, transparent 0);
+    background-size: 20px 20px;
+}
+
+.letter-greeting {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--pink-neon); /* Use the pink accent for emphasis */
+}
+
+.letter-body {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+.letter-signature {
+    margin-top: 50px;
+    font-size: 1.3em;
+    font-family: var(--header-font); 
+    font-weight: 900;
+    text-align: right;
+    color: var(--cyan-neon); /* Use cyan accent for sign-off */
+}
+
+
+/* --- 7. HEARTFELT WISHES (Intersection Observer Reveal) (Unchanged) --- */
+#heartfelt-wishes {
+    background-color: var(--midnight);
+}
+
+.message-paragraph {
+    max-width: 700px;
+    text-align: center;
+    font-size: 1.4em;
+    line-height: 1.6;
+    margin: 20px 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.message-paragraph.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* --- 8. GRAND FINALE BUTTON (Unchanged) --- */
+.flickering-neon-btn {
+    font-size: 2em;
+    padding: 15px 50px;
+    border: 2px solid var(--pink-neon);
+    background: var(--midnight);
+    color: var(--soft-white);
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 0 20px var(--pink-neon);
+    animation: flicker 1.5s infinite alternate;
+    transition: background-color 0.3s;
+}
+
+.flickering-neon-btn:hover {
+    background-color: var(--pink-neon);
+    color: var(--midnight);
+}
+
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { box-shadow: 0 0 10px var(--pink-neon), 0 0 20px var(--pink-neon), 0 0 40px var(--pink-neon); }
+    20%, 24%, 55% { box-shadow: none; }
+}
+
+
+/* --- 9. PROPOSAL MODAL (Unchanged) --- */
+#proposal-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s;
+}
+
+#proposal-modal.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.modal-content {
+    text-align: center;
+    padding: 50px;
+    max-width: 90%;
+    opacity: 0;
+    animation: modal-fade-in 1s forwards 0.3s;
+}
+
+@keyframes modal-fade-in {
+    to { opacity: 1; }
+}
+
+#modal-line-1 {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+    color: var(--cyan-neon);
+    text-transform: uppercase;
+}
+
+#modal-proposal-line {
+    font-size: 6em;
+    font-weight: 900;
+    min-height: 100px;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+    animation: pulse-neon 2s infinite alternate;
+}
+
+@keyframes pulse-neon {
+    0% { text-shadow: 0 0 10px var(--pink-neon), 0 0 20px var(--pink-neon); }
+    100% { text-shadow: 0 0 15px var(--pink-neon), 0 0 30px var(--pink-neon), 0 0 50px rgba(255, 64, 129, 0.5); }
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.final-btn {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: transform 0.2s;
+}
+
+.execute-btn {
+    background-color: var(--pink-neon);
+    color: var(--midnight);
+    box-shadow: 0 0 15px var(--pink-neon);
+}
+.execute-btn:hover {
+    transform: scale(1.05);
+}
+
+.cancel-btn {
+    background-color: var(--midnight);
+    color: var(--cyan-neon);
+    border: 1px solid var(--cyan-neon);
+    opacity: 0.5;
+}
+
+/* --- RESPONSIVENESS (UPDATED FOR HORIZONTAL FRAMES) --- */
+@media (max-width: 768px) {
+    #hero h1 {
+        font-size: 2.5em;
+    }
+    .auto-typing-text {
+        font-size: 1.2em;
+    }
+    .horizontal-scroll-wrapper {
+        height: 70vh; /* Slightly smaller on mobile */
+    }
+    .aperture-frame {
+        width: 75vw; /* Wider on mobile */
+        margin-right: 20px;
+    }
+    #modal-proposal-line {
+        font-size: 3em;
+    }
+    .letter-container {
+        padding: 30px 20px;
+    }
+    .letter-greeting {
+        font-size: 1.2em;
+    }
+    .letter-signature {
+        font-size: 1.1em;
+    }
+}
